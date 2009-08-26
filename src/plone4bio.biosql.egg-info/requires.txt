@@ -1,5 +1,0 @@
-setuptools
-Products.SQLAlchemyDA
-
-[tests]
-collective.testcaselayer
