@@ -1,0 +1,80 @@
+<configure 
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    i18n_domain="plone4bio">
+
+
+    <!-- Register the classes as Zope 2 content objects, and set up
+         factories so that Zope and CMF can create them.
+      -->
+
+    <five:registerClass
+        class=".root.BioSQLRoot"
+        meta_type="BioSQLRoot"
+        permission="cmf.AddPortalContent"
+        addview="plone4bio.biosql.BioSQLRoot"
+      />
+    
+    <utility
+        component=".root.bioSQLRootFactory"
+        name="plone4bio.biosql.BioSQLRoot"
+        />
+
+    <class class=".root.BioSQLRoot">
+        <require
+            permission="zope2.View"
+            interface="..interfaces.IBioSQLRoot"
+            />
+        <require
+            permission="cmf.ModifyPortalContent"
+            set_schema="..interfaces.IBioSQLRoot"
+            />
+    </class>
+
+    <five:registerClass
+        class=".database.BioSQLDatabase"
+        meta_type="BioSQLDatabase"
+        permission="cmf.AddPortalContent"
+        addview="plone4bio.biosql.BioSQLDatabase"
+      />
+
+    <utility
+        component=".database.bioSQLDatabaseFactory"
+        name="plone4bio.biosql.BioSQLDatabase"
+        />
+
+    <class class=".database.BioSQLDatabase">
+        <require
+            permission="zope2.View"
+            interface="..interfaces.IBioSQLDatabase"
+            />
+        <require
+            permission="cmf.ModifyPortalContent"
+            set_schema="..interfaces.IBioSQLDatabase"
+            />
+    </class>
+
+    <five:registerClass
+        class=".seqrecord.BioSQLSeqRecord"
+        meta_type="BioSQLSeqRecord"
+        permission="cmf.AddPortalContent"
+        addview="plone4bio.biosql.BioSQLSeqRecord"
+      />
+
+    <utility
+        component=".seqrecord.bioSQLSeqRecordFactory"
+        name="plone4bio.biosql.BioSQLSeqRecord"
+        />
+
+    <class class=".seqrecord.BioSQLSeqRecord">
+        <require
+            permission="zope2.View"
+            interface="..interfaces.IBioSQLSeqRecord"
+            />
+        <require
+            permission="cmf.ModifyPortalContent"
+            set_schema="..interfaces.IBioSQLSeqRecord"
+            />
+    </class>
+
+</configure>

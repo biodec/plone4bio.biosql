@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
+    i18n_domain="plone4bio">
+
+    <five:registerPackage package="." initialize=".initialize" />
+
+    <!-- Poke dependencies -->
+
+    <!-- Include sub-packages -->
+    <include package=".content" />
+    <include package=".browser" />
+
+    <!-- Register GenericSetup profile used for installation -->
+    <genericsetup:registerProfile
+        name="default"
+        title="Plone4Bio BioSQL"
+        directory="profiles/default"
+        description="Extension profile for plone4bio.biosql."
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+     <five:traversable class=".content.proxy.BaseProxy"/>
+
+</configure>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<object name="portal_catalog" meta_type="Plone Catalog Tool">
+  <index name="name" meta_type="FieldIndex">
+    <indexed_attr value="Name" />
+  </index>
+  <index name="code" meta_type="FieldIndex">
+    <indexed_attr value="code" />
+  </index>
+  <index name="descnote" meta_type="FieldIndex">
+    <indexed_attr value="descnote" />
+  </index>
+  <!--
+  <index name="descnote_fast" meta_type="FieldIndex" />
+  -->
+  <index name="gocode" meta_type="FieldIndex" />
+  <index name="godesc" meta_type="FieldIndex" />
+  <index name="features" meta_type="FieldIndex" />
+  <index name="motives" meta_type="FieldIndex" />
+  <index name="comments" meta_type="FieldIndex" />
+  <index name="primm" meta_type="FieldIndex" />
+  <index name="organism" meta_type="FieldIndex" />
+  <index name="keywords" meta_type="FieldIndex" />
+  <index name="identifier" meta_type="FieldIndex" />
+</object>

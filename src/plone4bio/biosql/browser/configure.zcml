@@ -1,0 +1,127 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:five="http://namespaces.zope.org/five"
+   xmlns:cmf="http://namespaces.zope.org/cmf"
+   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+   xmlns:plone="http://namespaces.plone.org/plone"
+>
+
+<include package="plone.app.contentmenu" /> 
+
+    <browser:page
+      for="..interfaces.IBioSQLRoot"
+      name="view"
+      template="templates/biosqlroot.pt"
+      allowed_interface=".interfaces.IBioSQLRootView"
+      permission="zope2.View"
+      />
+
+     <browser:page
+        for="zope.app.container.interfaces.IAdding"
+        name="plone4bio.biosql.BioSQLRoot"
+        class=".biosql.BioSQLRootAddForm"
+        permission="cmf.AddPortalContent"
+        />
+
+   <browser:page
+        for="..interfaces.IBioSQLRoot"
+        name="edit"
+        class=".biosql.BioSQLRootEditForm"
+        permission="cmf.ModifyPortalContent"
+        />
+
+     <browser:page
+        for="zope.app.container.interfaces.IAdding"
+        name="plone4bio.biosql.BioSQLDatabase"
+        class=".biosql.BioSQLDatabaseAddForm"
+        permission="cmf.AddPortalContent"
+        />
+
+   <browser:page
+        for="..interfaces.IBioSQLDatabase"
+        name="edit"
+        class=".biosql.BioSQLDatabaseEditForm"
+        permission="cmf.ModifyPortalContent"
+        />
+
+   <browser:page
+        for="zope.app.container.interfaces.IAdding"
+        name="plone4bio.biosql.BioSQLSeqRecord"
+        class=".biosql.BioSQLSeqRecordAddForm"
+        permission="cmf.AddPortalContent"
+        />
+
+   <browser:page
+        for="..interfaces.IBioSQLSeqRecord"
+        name="edit"
+        class=".biosql.BioSQLSeqRecordEditForm"
+        permission="cmf.ModifyPortalContent"
+        />
+
+    <browser:resourceDirectory
+        name="plone4bio.biosql.images"
+        directory="images"
+        />
+
+<!--
+    <browser:page
+        for="..interfaces.IBioSQLRoot"
+        name="load"
+        class=".biosql.BioSQLRootLoadForm"
+        permission="cmf.ModifyPortalContent"
+        />
+
+  <browser:page
+        name="load"
+        for="..interfaces.IBioSQLDatabase"
+        template="templates/upload.pt"
+        class=".biosql.BioSQLDatabaseLoadForm"
+        permission="cmf.ModifyPortalContent"
+        />
+-->
+
+  <browser:page
+      for="..interfaces.IBioSQLRoot"
+      name="contents"
+      class="zope.app.container.browser.contents.Contents"
+      permission="zope2.View"
+      attribute="contents"
+      />
+         
+    <browser:addMenuItem
+        title="BioSQLRoot"
+        factory="plone4bio.biosql.BioSQLRoot"
+        view="plone4bio.biosql.BioSQLRoot"
+        permission="cmf.AddPortalContent"
+        />
+        
+    <!-- BioSQLDatabase -->
+    <browser:page
+      for="..interfaces.IBioSQLDatabase"
+      name="view"
+      template="templates/biosqldatabase.pt"
+      allowed_interface=".interfaces.IBioSQLDatabaseView"
+      permission="zope2.View"
+      />
+ 
+    <!-- BioSQLGene -->
+    <browser:page
+      for="..interfaces.IBioSQLGene"
+      name="view"
+      template="templates/biosqlgene.pt"
+      allowed_interface=".interfaces.IBioSQLGeneView"
+      permission="zope2.View"
+      />
+
+    <!-- BioSQLSeqRecord
+    <browser:page
+      for="..interfaces.IBioSQLSeqRecord"
+      name="view"
+      template="templates/biosqlsecrecord.pt"
+      allowed_interface=".interfaces.IBioSQLSeqRecordView"
+      permission="zope2.View"
+      />
+    -->
+
+ </configure>

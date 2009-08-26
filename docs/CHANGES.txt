@@ -1,0 +1,16 @@
+===========================
+plone4bio.biosql Changes
+===========================
+
+Features
+--------
+
+* Added the new object `predictor'.
+
+* TODO: add a fully working predictor.
+
+
+plone4bio.biosql  (2008-07-01)
+=================================
+
+* First release (Mauro Amico)

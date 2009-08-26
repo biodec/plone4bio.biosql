@@ -1,0 +1,4 @@
+
+plone4bio.biosql is a software to predict properties of biosequences,
+meant to be used in a bioinformatics content management system.
+plone4bio.biosql is Copyright (C) 2008-2009 BioDec S.r.l.

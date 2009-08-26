@@ -1,0 +1,14 @@
+Internal use only
+-----------------
+
+* delete virtual objects
+* move/copy/rename virtual objects
+* hide sharing on virtual objetcs (create a custom workflow for virtual object)
+* move base methods on plone4bio.base
+* test, test, test, ...
+* performance tuning
+* wrap seqrcord (& co) ... see zope.schema.fieldproperty.FieldProperty
+* i campi sequence (e alphabet) in un seqrecord devono essere worm (write-once-read-many)
+* definire rule per aggiornare il catalogo all'aggiornamento dei dati su sql 
+* e/o definire job plonecron
+* possibilità di montare biosql in readonlymode

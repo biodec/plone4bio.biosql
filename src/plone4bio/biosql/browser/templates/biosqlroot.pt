@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="plone4bio">
+<head>
+</head>
+
+<body>
+<div metal:fill-slot="body">
+    <h1 class="documentFirstHeading" tal:content="context/title" />
+
+    <tal:foldercontents tal:define="folderContents here/getValues">
+    	 <table class="listing"
+                   summary="Content listing"
+                   i18n:attributes="summary summary_content_listing;">
+         	<thead>
+            	<tr>
+                	<th class="nosort">&nbsp;<tal:title i18n:translate="listingheader_title"
+                    >Title</tal:title>&nbsp;</th>
+				</tr>
+			</thead>
+            <tbody>
+                <tal:items repeat="item folderContents">    	
+			    	<tr                        
+			    		tal:define="oddrow repeat/item/odd;"
+                        tal:attributes="class python:(oddrow and 'even' or 'odd')">
+                        <tal:defs define="item_url item/getURL|item/id;
+                                          item_id item/getId|item/id;
+                                          item_title_or_id item/pretty_title_or_id; 
+                                          ">                
+			    			<td>
+			    				<a href="#"
+                                       tal:attributes="href item_url;"
+                                       tal:content="item_title_or_id">
+                                        Item Title
+                                    </a>
+			    			 </td>
+			    		</tal:defs>
+			    	</tr>
+    			</tal:items>
+			</tbody>
+    	</table>
+    </tal:foldercontents>    
+
+</div>
+</body>
+</html>

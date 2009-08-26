@@ -1,0 +1,57 @@
+<html metal:use-macro="context/@@standard_macros/view"
+    i18n:domain="plone4bio">
+<body>
+<div metal:fill-slot="body">
+
+  <form action="." tal:attributes="action request/URL"
+        method="post" enctype="multipart/form-data">
+
+    <h3 i18n:translate="">Upload a file</h3>
+    
+    <pre tal:define="errors view/errors" tal:content="errors"
+        i18n:translate=""/>
+
+    <div class="row">
+      <div class="label">
+        <label for="field.dbtype"
+               title="Database type ..."
+               i18n:attributes="title" i18n:translate="">Database type</label>
+      </div>
+      <div class="field">
+        <input class="textType"
+               id="field.dbtype"
+               name="field.dbtype"
+               size="20"
+               type="text"
+               value="GenBank" 
+	     />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label">
+        <label for="field.data"
+               title="The actual content of the object."
+               i18n:attributes="title" i18n:translate="">Data</label>
+      </div>
+      <div class="field">
+        <input class="fileType"
+               id="field.data"
+               name="field.data"
+               size="20"
+               type="file"/></div>
+    </div>
+
+    <div class="row">
+      <div class="controls"><hr />
+        <input type="submit" i18n:attributes="value update-button"
+            value="Upload" name="UPLOAD_SUBMIT" />
+      </div>
+    </div>
+
+  </form>
+
+</div>
+</body>
+
+</html>

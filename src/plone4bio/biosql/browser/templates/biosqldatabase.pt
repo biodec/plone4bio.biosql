@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="plone4bio">
+<head>
+</head>
+
+<body>
+<div metal:fill-slot="body">
+  
+    <h1 class="documentFirstHeading" tal:content="context/title" />
+
+    <tal:foldercontents tal:define="folderContents here/keys;
+                                    Batch python:modules['Products.CMFPlone'].Batch;
+                                    b_size python:10;
+                                    b_start python:0;
+                                    b_start request/b_start | b_start;
+                                    dblen python:here.getLength();">
+
+    <div tal:condition="folderContents"
+       tal:define="batch python:Batch(folderContents, b_size, int(b_start), orphan=1);">
+
+    <table class="listing vertical" style="float:right">
+        <tr>
+            <th i18n:translate="label_biodatabase">Biodatabase</th>
+            <td tal:content="context/id" />
+        </tr>
+        <tr>
+            <th i18n:translate="label_dblen">Records</th>
+            <td tal:content="dblen" />
+        </tr>
+
+    </table>
+
+
+
+	<div metal:use-macro="here/batch_macros/macros/navigation" />
+
+    <table class="listing"
+                   summary="Content listing"
+                   i18n:attributes="summary summary_content_listing;" >
+		
+       	   <thead>
+       	           <tr>
+                    <th class="nosort">&nbsp;<tal:id i18n:translate="listingheader_accession"
+                    >Accession</tal:id>&nbsp;</th>
+                    <th class="sort">&nbsp;<tal:id i18n:translate="listingheader_name"
+                    >Name</tal:id>&nbsp;</th>
+                    <th class="sort">&nbsp;<tal:id i18n:translate="listingheader_identifier"
+                    >Identifier</tal:id>&nbsp;</th>
+                    <th class="sort">&nbsp;<tal:description i18n:translate="listingheader_description"
+                    >Description</tal:description>&nbsp;</th>
+		   </tr>
+	    </thead>
+            <tbody>
+                <tal:items repeat="id batch">    	
+		    		<tr                        
+	     				tal:define="oddrow repeat/id/odd;"
+                        tal:attributes="class python:(oddrow and 'even' or 'odd')">
+                        	<tal:defs define="item python:here[id];
+                                              item_url item/getURL|item/id;
+                                        	  item_accession item/Accession|item_id;
+                                        	  item_name item/Name|item_id;
+                                	          item_id item/GeneIdentifier|item/id;
+                                          	  item_description item/Description;
+                                              ">                
+				   			<td>
+			    	       		<a href="#"
+                                          tal:attributes="href item_url;"
+                                          tal:content="item_accession">
+                                          Item Title
+                                </a>
+			    	   		</td>
+							<td tal:content="item_name"/>
+						   	<td tal:content="item_id"/>
+						   	<td>
+							    <ul>
+							    	<tal:desc tal:define="desclist python:item_description.split('###');"
+							   	    	tal:repeat="desc desclist">
+						    		      <li tal:content="desc" />
+							    	</tal:desc>
+							    </ul> 
+				   			</td>
+			    	</tal:defs>
+				</tr>
+    		</tal:items>
+	    </tbody>
+    </table>
+
+	<div metal:use-macro="here/batch_macros/macros/navigation" />
+
+    </div>
+    </tal:foldercontents>    
+    
+</div>
+</body>
+</html>
