@@ -113,6 +113,7 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
         return obj
 
     def __iter__(self):
+        # TODO: cache?
         try:
             database = self.getDatabase()
         except AttributeError:
@@ -124,10 +125,10 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
             yield str(name)
     
     def keys(self, reload=False):
-        # TODO:
-        self._v_keys = list(self.__iter__())
-        #if self._v_keys is None or reload:
-        #    self._v_keys = list(self.__iter__())
+        # TODO: check cache invalidation
+        # self._v_keys = list(self.__iter__())
+        if self._v_keys is None or reload:
+            self._v_keys = list(self.__iter__())
         return self._v_keys
             
     # XXX verificare .....
