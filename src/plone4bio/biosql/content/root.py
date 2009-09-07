@@ -33,6 +33,7 @@ _marker=[]
 
 drivers = {
  'postgres' : 'psycopg2',
+ 'mysql' : 'MySQLdb',
 }
 
 def getdbkey(f, self, *args):
