@@ -54,12 +54,12 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
 
     # @ram.cache(_cachekey)
     def getDatabase(self, reload=False):
-        # from stxnext import pdb;pdb.set_trace()
         if self._v_database:
             if not self._v_database.adaptor.conn.is_valid:
                 #TODO: logging
                 self._v_database = None
         if self._v_database is None or reload:
+            self._v_keys = None
             dbserver = self.getBioSQLRoot().getDBServer()
             try:
                 self._v_database = dbserver[self.id]
@@ -135,15 +135,25 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
     def has_key(self, key):
         if not isinstance(key, basestring):
             return False
-        #try:
-        #    database = self.getDatabase()
-        #except AttributeError:
-        #    # No acquisition context, fail silently
-        #    return False
+        try:
+            key = int(key)
+        except ValueError:
+            return False
+        try:
+            database = self.getDatabase()
+        except AttributeError:
+            # No acquisition context, fail silently
+            return False
         # TODO: bug in get_Seq_by_primary_id ??? see #XXX
-        # database.get_Seq_by_primary_id(key)
-        return key in [str(id) for id in self.keys()]
-        # return dict(database.items()).has_key(int(key))
+        if database.get_Seq_by_primary_id(key):
+            return True
+        else:
+            return False
+        # return key in [str(id) for id in self.keys()]
+        #try:
+        #    return key in self.keys()
+        #except:
+        #    return False
     
     # Acquisition wrappers don't support the __iter__ slot, so re-implement
     # iteritems to call __iter__ directly.

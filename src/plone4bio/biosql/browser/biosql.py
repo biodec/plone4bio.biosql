@@ -3,6 +3,7 @@ from Acquisition import aq_inner
 
 from zope.component import createObject
 from zope.formlib import form
+from zope.app.form.browser.textwidgets import TextWidget
 
 from plone.app.form import base
 
@@ -11,9 +12,13 @@ from plone4bio.base.browser.seqrecord import SeqRecordAddForm
 from plone4bio.base.content.seqrecord import SeqRecord
 from plone4bio.biosql.interfaces import IBioSQLRoot, IBioSQLDatabase, IBioSQLSeqRecord
 
+class LongTextWidget(TextWidget):
+    displayWidth = 50
+
 class BioSQLRootAddForm(base.AddForm):
     """Add form """
     form_fields = form.Fields(IBioSQLRoot)
+    form_fields['dsn'].custom_widget = LongTextWidget
     label = _(u"Add BioSQLRoot")
     form_name = _(u"Edit BioSQLRoot")
     def create(self, data):
@@ -24,6 +29,7 @@ class BioSQLRootAddForm(base.AddForm):
 class BioSQLRootEditForm(base.EditForm):
     """Edit form """
     form_fields = form.Fields(IBioSQLRoot)
+    form_fields['dsn'].custom_widget = LongTextWidget
     label = _(u"Edit BioSQLRoot")
     form_name = _(u"Edit BioSQLRoot")
 

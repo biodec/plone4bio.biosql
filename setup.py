@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.0.0rc1'
+version = '1.0.0'
 readme = open('README.txt')
 long_description = readme.read()
 readme.close()
@@ -32,7 +32,7 @@ setup(name='plone4bio.biosql',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
-          'Products.SQLAlchemyDA',
+          'z3c.sqlalchemy',
       ],
       tests_require=tests_require,
       extras_require={'tests': tests_require},
