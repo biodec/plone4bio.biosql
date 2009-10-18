@@ -43,7 +43,7 @@
 			</tbody>
     	</table>
 
-        <form action="@@refresh_catalog">
+        <form action="@@refresh_catalog" tal:condition="python:checkPermission('Modify portal content', here)">
             <input class="context" type="submit" value="rebuild catalog" />
         </form>
     </tal:foldercontents>    
