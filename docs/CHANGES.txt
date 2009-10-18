@@ -2,13 +2,30 @@
 plone4bio.biosql Changes
 ===========================
 
+plone4bio.biosql 1.0.1 (unreleased)
+===================================
+
 Features
 --------
 
-* Added the new object `predictor'.
+* rebuild catalog action
 
-* TODO: add a fully working predictor.
+* choice seqrecord key field (fix #6)
 
+Bug fixes
+---------
+
+* "biosql bioentries are not addressable by their given database accession" (see #6)
+
+plone4bio.biosql 1.0.0 (2009-10-18)
+===================================
+
+Features
+--------
+
+* mysql / postgresql support
+
+* initial read/write biosql support
 
 plone4bio.biosql  (2008-07-01)
 =================================

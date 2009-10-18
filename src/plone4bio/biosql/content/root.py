@@ -10,6 +10,9 @@ from plone.app.content.container import Container
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import View
 from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_callable
 from zope.app.container.interfaces import IContainer
 from plone.app.content.interfaces import INameFromTitle
 
@@ -48,7 +51,32 @@ class BioSQLRoot(Container):
     security = ClassSecurityInfo()
     # isPrincipiaFolderish = True # already on Container
     dsn = FieldProperty(IBioSQLRoot['dsn'])
+    seqrecord_key = FieldProperty(IBioSQLRoot['seqrecord_key'])
     _v_dbserver = None
+
+    # see CMFPlone/CatalogTool.py
+    def refreshCatalog(self, clear=1):
+        def indexObject(obj, path):
+            if (base_hasattr(obj, 'indexObject') and
+                safe_callable(obj.indexObject)):
+                try:
+                    obj.indexObject()
+                except TypeError:
+                    # Catalogs have 'indexObject' as well, but they
+                    # take different args, and will fail
+                    pass
+        for database in self.values():
+            database.invalidateCache()
+        portal_catalog = getToolByName(self, 'portal_catalog')
+        for obj in portal_catalog.searchResults(path=self.absolute_url_path()):
+            portal_catalog.uncatalog_object(obj.getPath())
+        portal_catalog.ZopeFindAndApply(self, search_sub=True, apply_func=indexObject)
+
+    def __getattr__(self, name):
+        if self.has_key(name):
+            return self[name]
+        else:
+            raise AttributeError, name
 
     security.declareProtected(View, "getBioSQLRoot")
     def getBioSQLRoot(self):

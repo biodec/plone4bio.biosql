@@ -10,8 +10,10 @@
     <!-- Poke dependencies -->
 
     <!-- Include sub-packages -->
+    <include file="monkey.zcml" />
     <include package=".content" />
     <include package=".browser" />
+    <include package=".events" />
 
     <!-- Register GenericSetup profile used for installation -->
     <genericsetup:registerProfile

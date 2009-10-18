@@ -1,5 +1,6 @@
 from zope.interface import Interface
 from zope import schema
+from zope.schema.vocabulary import SimpleVocabulary
 
 from plone4bio.base import Plone4BioMessageFactory as _
 from plone4bio.base.interfaces import ISeqRecord
@@ -35,3 +36,10 @@ class IBioSQLRoot(Interface):
     dsn = schema.TextLine(title=_(u"DSN"),
         description=_(u"database source name, i.e.: postgres://user@dbserver/dbname"),
     )
+    seqrecord_key = schema.Choice(title=_("seqrecord_key"),
+        description =_(u"select the field name key for seqrecord uris"),
+        vocabulary = SimpleVocabulary.fromItems([
+                     (_(u"bioentry_id"), "bioentry_id"),
+                     (_(u"accession"), "accession"),
+                     (_(u"accession.version"), "version"),])
+     )

@@ -94,7 +94,13 @@ class BioSQLSeqRecord(BaseProxy, SeqRecord, DynamicType):
         """ """
         # from stxnext import pdb;pdb.set_trace()
         if self._v_seqrecord is None or reload:
-            self._v_seqrecord = self._getBiodatabase().getDatabase()[self.id]
+            if self.getBioSQLRoot().seqrecord_key == 'accession':
+                self._v_seqrecord = self._getBiodatabase().getDatabase().get_Seq_by_acc(self.id)
+            elif self.getBioSQLRoot().seqrecord_key == 'version':
+                self._v_seqrecord = self._getBiodatabase().getDatabase().get_Seq_by_ver(self.id)
+            else: # default = 'bioentry_id':
+                self._v_seqrecord = self._getBiodatabase().getDatabase()[self.id]
+            logger.debug("%s -> %r" % (self.id, self._v_seqrecord))
         return self._v_seqrecord
 
     def _setSeqRecord(self, seqrecord):

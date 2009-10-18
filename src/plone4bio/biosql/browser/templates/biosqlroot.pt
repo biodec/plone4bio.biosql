@@ -42,7 +42,12 @@
     			</tal:items>
 			</tbody>
     	</table>
+
+        <form action="@@refresh_catalog">
+            <input class="context" type="submit" value="rebuild catalog" />
+        </form>
     </tal:foldercontents>    
+  
 
 </div>
 </body>

@@ -7,27 +7,34 @@
    xmlns:plone="http://namespaces.plone.org/plone"
 >
 
-<include package="plone.app.contentmenu" /> 
+    <include package="plone.app.contentmenu" /> 
 
-    <browser:page
-      for="..interfaces.IBioSQLRoot"
-      name="view"
-      template="templates/biosqlroot.pt"
-      allowed_interface=".interfaces.IBioSQLRootView"
-      permission="zope2.View"
-      />
+     <browser:page
+         for="..interfaces.IBioSQLRoot"
+         name="view"
+         template="templates/biosqlroot.pt"
+         allowed_interface=".interfaces.IBioSQLRootView"
+         permission="zope2.View"
+         />
 
      <browser:page
         for="zope.app.container.interfaces.IAdding"
         name="plone4bio.biosql.BioSQLRoot"
-        class=".biosql.BioSQLRootAddForm"
+        class=".root.BioSQLRootAddForm"
         permission="cmf.AddPortalContent"
         />
 
    <browser:page
         for="..interfaces.IBioSQLRoot"
         name="edit"
-        class=".biosql.BioSQLRootEditForm"
+        class=".root.BioSQLRootEditForm"
+        permission="cmf.ModifyPortalContent"
+        />
+
+    <browser:view
+        name="refresh_catalog"
+        for="..interfaces.IBioSQLRoot"
+        class=".root.RefreshCatalog"
         permission="cmf.ModifyPortalContent"
         />
 

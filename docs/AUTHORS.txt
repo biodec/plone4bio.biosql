@@ -1,1 +1,6 @@
-Mauro Amico - mauro (at) biodec.com
+Maintainer
+----------
+
+Mauro Amico (mauro AT biodec DOT com) is the active maintainer of the
+*plone4bio.biosql* framework.
+

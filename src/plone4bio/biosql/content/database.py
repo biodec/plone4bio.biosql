@@ -52,6 +52,16 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
     #         del(kwargs['parent'])
     #    super(BioSQLDatabase, self).__init__(*args, **kwargs)
 
+    # def __getattr__(self, name):
+    #     if self.has_key(name):
+    #         return self[name]
+    #     else:
+    #         raise AttributeError, name
+
+    def invalidateCache(self):
+        self._v_database = None
+        self._v_keys = None
+
     # @ram.cache(_cachekey)
     def getDatabase(self, reload=False):
         if self._v_database:
@@ -121,8 +131,15 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
             raise StopIteration
         if not database:
             raise StopIteration
-        for name in database.get_all_primary_ids(): # -- bioentry_id
-            yield str(name)
+        if self.getBioSQLRoot().seqrecord_key == 'accession':
+            for name in database.adaptor.list_bioentry_accessions(database.dbid):
+                yield str(name)
+        elif self.getBioSQLRoot().seqrecord_key == 'version':
+            for name in database.adaptor.list_bioentry_versions(database.dbid):
+                yield str(name)
+        else: # default = 'bioentry_id':
+            for name in database.get_all_primary_ids(): # -- bioentry_id
+                yield str(name)
     
     def keys(self, reload=False):
         # TODO: check cache invalidation
@@ -135,25 +152,36 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
     def has_key(self, key):
         if not isinstance(key, basestring):
             return False
-        try:
-            key = int(key)
-        except ValueError:
-            return False
+        if self.getBioSQLRoot().seqrecord_key == 'accession':
+            pass
+        elif self.getBioSQLRoot().seqrecord_key == 'version':
+            rv = key.split(".")
+            if len(rv) > 2:
+                return False
+            if len(rv) == 2:
+                try:
+                    int(rv[1])
+                except ValueError:
+                    return False
+        else: # default = 'bioentry_id':
+            try:
+                key = int(key)
+            except ValueError:
+                return False
         try:
             database = self.getDatabase()
         except AttributeError:
             # No acquisition context, fail silently
             return False
-        # TODO: bug in get_Seq_by_primary_id ??? see #XXX
-        if database.get_Seq_by_primary_id(key):
-            return True
-        else:
+        try:
+            if self.getBioSQLRoot().seqrecord_key == 'accession':
+                return bool(database.get_Seq_by_acc(key))
+            if self.getBioSQLRoot().seqrecord_key == 'version':
+                return bool(database.get_Seq_by_ver(key))
+            else: # default = 'bioentry_id':
+                return bool(database.get_Seq_by_primary_id(key)) # biopython's bug ???
+        except IndexError:
             return False
-        # return key in [str(id) for id in self.keys()]
-        #try:
-        #    return key in self.keys()
-        #except:
-        #    return False
     
     # Acquisition wrappers don't support the __iter__ slot, so re-implement
     # iteritems to call __iter__ directly.
