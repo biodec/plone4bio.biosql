@@ -1,36 +1,16 @@
 from setuptools import setup, find_packages
 version = '1.0.1'
 
-def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
-
-long_description = (
-    read('README.txt')
-    + '\n' +
-    'Detailed Documentation\n'
-    '**********************\n'
-    + '\n' +
-    read('src', 'plone4bio', 'biosql', 'README.txt')
-    + '\n' +
-    'Contributors\n'
-    '************\n'
-    + '\n' +
-    read('docs', 'AUTHORS.txt')
-    + '\n' +
-    'Change history\n'
-    '**************\n'
-    + '\n' +
-    read('docs', 'CHANGES.txt')
-    + '\n' +
-   'Download\n'
-    '********\n'
-
 tests_require = ['collective.testcaselayer']
 
 setup(name='plone4bio.biosql',
       version=version,
       description="Plone4Bio BioSQL",
-      long_description=long_description,
+      long_description='\n'.join(
+          open(os.path.join(*path)).read() for path in [
+              ("README.txt"),
+              ("src", "plone4bio", "biosql", "README.txt"),
+              ("docs", "AUTHORS.txt"), ("docs", "CHANGES.txt")]),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
