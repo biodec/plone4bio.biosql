@@ -8,7 +8,7 @@ setup(name='plone4bio.biosql',
       description="Plone4Bio BioSQL",
       long_description='\n'.join(
           open(os.path.join(*path)).read() for path in [
-              ("README.txt"),
+              ("README.txt",),
               ("src", "plone4bio", "biosql", "README.txt"),
               ("docs", "AUTHORS.txt"), ("docs", "CHANGES.txt")]),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
