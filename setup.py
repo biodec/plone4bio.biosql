@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
+import os
 version = '1.0.1'
 
-tests_require = ['collective.testcaselayer']
+tests_require = ['collective.testcaselayer', 'pysqlite', ]
 
 setup(name='plone4bio.biosql',
       version=version,

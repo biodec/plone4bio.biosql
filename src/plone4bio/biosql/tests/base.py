@@ -16,7 +16,6 @@ def setup_product():
     fiveconfigure.debug_mode = False
     ztc.installPackage('plone4bio.biosql')
 
-
 class BaseTestCase(ptc.PloneTestCase):
     """Base test case for.
     """
