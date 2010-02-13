@@ -1,2 +1,4 @@
 from seqrecord import BioSQLSeqRecord
+BioSQLSeqRecord
 from database import BioSQLDatabase
+BioSQLDatabase
