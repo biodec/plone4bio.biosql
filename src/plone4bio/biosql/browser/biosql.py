@@ -1,16 +1,13 @@
 
 from Acquisition import aq_inner
 
-from zope.component import createObject
 from zope.formlib import form
-from zope.app.form.browser.textwidgets import TextWidget
-
 from plone.app.form import base
 
 from plone4bio.base import Plone4BioMessageFactory as _
 from plone4bio.base.browser.seqrecord import SeqRecordAddForm
 from plone4bio.base.content.seqrecord import SeqRecord
-from plone4bio.biosql.interfaces import IBioSQLRoot, IBioSQLDatabase, IBioSQLSeqRecord
+from plone4bio.biosql.interfaces import IBioSQLDatabase, IBioSQLSeqRecord
 
 class BioSQLDatabaseAddForm(base.AddForm):
     """Add form """
