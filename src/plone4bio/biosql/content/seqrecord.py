@@ -70,7 +70,11 @@ class BioSQLSeqRecord(BaseProxy, SeqRecord, DynamicType):
 
     #TODO: plone4bio.base
     def SearchableText(self):
-        return "%s %s %s %r" % (self.name, self.accession, self.description, self.annotations)
+        text = "%s %s %s" % (self.name, self.accession, self.description)
+        if self.annotations.has_key('references'):
+            for ref in self.annotations['references']:
+                text = "%s %s" % (text, ref)
+        return text
     
     def Accession(self):
         return self.id
@@ -96,7 +100,6 @@ class BioSQLSeqRecord(BaseProxy, SeqRecord, DynamicType):
     # @memoize
     def _getSeqRecord(self, reload=False):
         """ """
-        # from stxnext import pdb;pdb.set_trace()
         if self._v_seqrecord is None or reload:
             if self.getBioSQLRoot().seqrecord_key == 'accession':
                 self._v_seqrecord = self._getBiodatabase().getDatabase().get_Seq_by_acc(self.id)
