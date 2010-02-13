@@ -68,6 +68,10 @@ class BioSQLSeqRecord(BaseProxy, SeqRecord, DynamicType):
     _v_biodatabase = None
     _v_seqrecord = None
 
+    #TODO: plone4bio.base
+    def SearchableText(self):
+        return "%s %s %s %r" % (self.name, self.accession, self.description, self.annotations)
+    
     def Accession(self):
         return self.id
     accession = property(fget=Accession)
@@ -142,6 +146,10 @@ class BioSQLSeqRecord(BaseProxy, SeqRecord, DynamicType):
     def Dbxrefs(self):
         return self._getSeqRecord().dbxrefs
     dbxrefs = property(fget=Dbxrefs)
+
+    def getReferences(self):
+        return self.annotations['references']
+    references = property(fget=getReferences)
 
 InitializeClass(BioSQLSeqRecord)
 
