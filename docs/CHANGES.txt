@@ -7,10 +7,9 @@ plone4bio.biosql 1.0.1 (unreleased)
 
 Features
 --------
-
-* rebuild catalog action
-
-* choice seqrecord key field (fix #6)
+* more indexes (see #12) [mauro]
+* rebuild catalog action [mauro]
+* choice seqrecord key field (fix #6) [mauro]
 
 Bug fixes
 ---------
@@ -24,7 +23,6 @@ Features
 --------
 
 * mysql / postgresql support
-
 * initial read/write biosql support
 
 plone4bio.biosql  (2008-07-01)
