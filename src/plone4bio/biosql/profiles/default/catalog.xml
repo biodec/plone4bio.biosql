@@ -20,9 +20,16 @@
   <index name="organism" meta_type="FieldIndex">
     <indexed_attr value="organism" />
   </index>
+  <index name="taxonomy" meta_type="KeywordIndex">
+    <indexed_attr value="taxonomy" />
+  </index>
   <index name="accessions" meta_type="KeywordIndex">
     <indexed_attr value="accessions" />
   </index>
   <index name="keywords" meta_type="FieldIndex" />
   <index name="identifier" meta_type="FieldIndex" />
+
+  <column value="accessions"/>
+  <column value="taxonomy"/>
+  <column value="organism"/>
 </object>

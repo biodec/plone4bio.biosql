@@ -174,6 +174,14 @@ class BioSQLSeqRecord(BaseProxy, SeqRecord, DynamicType):
             return ""
     accessions = property(fget=getAccessions)
 
+    def getTaxonomy(self):
+        if self.annotations.has_key('taxonomy'):
+            return self.annotations['taxonomy']
+        else:
+            return []
+    taxonomy = property(fget=getTaxonomy)
+
+
 InitializeClass(BioSQLSeqRecord)
 
 bioSQLSeqRecordFactory = Factory(BioSQLSeqRecord, title=_(u"Create a new BioSQL SeqRecord"))
