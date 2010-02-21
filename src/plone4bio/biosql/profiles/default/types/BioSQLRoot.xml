@@ -3,7 +3,7 @@
    meta_type="Factory-based Type Information"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
    i18n:domain="plone4bio">
- <property name="title" i18n:translate="">Plone4Bio BioSQLRoot</property>
+ <property name="title" i18n:translate="">BioSQLRoot</property>
  <property name="description">Plone4Bio BioSQLRoot</property>
  <property name="content_icon">++resource++plone4bio.biosql.images/biosqlroot.png</property>
  <property name="content_meta_type">BioSQLRoot</property>

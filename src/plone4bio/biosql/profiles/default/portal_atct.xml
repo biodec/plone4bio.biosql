@@ -6,53 +6,41 @@
    <criteria>ATListCriterion</criteria>
    <criteria>ATSimpleStringCriterion</criteria>
    -->
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
   </index>
   <index name="code" description="" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
-  </index>
-  <index name="descnote" description="" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
-  </index>
-  <index name="descnote_fast" description="" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
-  </index>
-  <index name="gocode" description="" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
-  </index>
-  <index name="godesc" description="" enabled="False" friendlyName="">
-   <criteria>FormGoDescriptionCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
   </index>
   <index name="features" description="" enabled="False" friendlyName="">
-   <criteria>FormFeaturesCriterion</criteria>
+   <criteria>ATFeaturesCriterion</criteria>
   </index>
   <index name="comments" description="" enabled="False" friendlyName="">
-   <criteria>FormCommentsCriterion</criteria>
+   <criteria>ATCommentsCriterion</criteria>
   </index>
-  <index name="motives" description="" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
+  <index name="organism" description="Organism" enabled="True" friendlyName="Organism">
+   <criteria>ATListCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
   </index>
-  <index name="primm" description="" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
-  </index>
-  <index name="organism" description="" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
+  <index name="taxonomy" description="Taxonomy" enabled="True" friendlyName="Taxonomy">
+   <criteria>ATListCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
   </index>
   <index name="keywords" description="" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
   </index>
   <index name="identifier" description="Gene Identifier" enabled="False" friendlyName="">
-   <criteria>FormListCriterion</criteria>
-   <criteria>FormSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
+  </index>
+  <index name="accessions" description="Gene Identifier" enabled="False" friendlyName="">
+   <criteria>ATSimpleStringCriterion</criteria>
   </index>
  </topic_indexes>
+ <topic_metadata>
+     <metadata name="taxonomy" description="Taxonomy" enabled="True" friendlyName="Taxonomy"/>
+     <metadata name="organism" description="Organism" enabled="True" friendlyName="Organism"/>
+ </topic_metadata>
 </atcttool>
