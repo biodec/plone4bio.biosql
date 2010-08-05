@@ -16,7 +16,7 @@
          allowed_interface=".interfaces.IBioSQLRootView"
          permission="zope2.View"
          />
-
+<!--
      <browser:page
         for="zope.app.container.interfaces.IAdding"
         name="plone4bio.biosql.BioSQLRoot"
@@ -30,6 +30,7 @@
         class=".root.BioSQLRootEditForm"
         permission="cmf.ModifyPortalContent"
         />
+-->
 
     <browser:view
         name="refresh_catalog"
@@ -95,19 +96,22 @@
       permission="zope2.View"
       attribute="contents"
       />
-         
+
+<!--         
     <browser:addMenuItem
         title="BioSQLRoot"
         factory="plone4bio.biosql.BioSQLRoot"
         view="plone4bio.biosql.BioSQLRoot"
         permission="cmf.AddPortalContent"
         />
+-->
         
     <!-- BioSQLDatabase -->
     <browser:page
       for="..interfaces.IBioSQLDatabase"
       name="view"
       template="templates/biosqldatabase.pt"
+      class=".database.BioSQLDatabaseView"
       allowed_interface=".interfaces.IBioSQLDatabaseView"
       permission="zope2.View"
       />

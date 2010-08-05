@@ -9,6 +9,7 @@ from zope.component.factory import Factory
 from plone.app.content.batching import IBatch
 from Products.CMFCore.interfaces import IFolderish
 from zope.app.container.interfaces import IContainer
+from Products.CMFCore.interfaces import IDynamicType
 from plone.app.content.container import Container
 
 from Products.CMFCore.DynamicType import DynamicType
@@ -35,8 +36,7 @@ def _cachekey(method, self):
 
 class BioSQLDatabase(BaseProxy, DynamicType, Container):
     """  BioSQLDatabase ... """
-    __implements__ = (DynamicType.__implements__)
-    implements(IBioSQLDatabase, IContainer, IFolderish)
+    implements(IBioSQLDatabase, IContainer, IFolderish, IDynamicType)
     adapts(IBatch)
     meta_type = "BioSQLDatabase"
     portal_type = "BioSQLDatabase"
@@ -44,6 +44,11 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
     isPrincipiaFolderish = True
     _v_database = None
     _v_keys = None
+
+    # TODO: define wf
+    _Review_portal_content_Permission = ''
+    _Request_review_Permission = ''
+
     #_v_root = None
 
     #def __init__(self, *args, **kwargs):

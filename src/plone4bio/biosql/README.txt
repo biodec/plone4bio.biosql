@@ -5,15 +5,15 @@ Create biosqlroot
 
 Create a mockup for a biopython's biosql database:
 
- import tempfile
- import os
- from BioSQL import BioSeqDatabase
+  >>> import tempfile
+  >>> import os
+  >>> from BioSQL import BioSeqDatabase
 
- (dbh, dbpath) = tempfile.mkstemp(suffix=".db")
- server = BioSeqDatabase.open_database(driver = 'sqlite3', db = dbpath)
- server.load_database_sql('biosqldb-sqlite.sql')
- server.commit()
- server.close()
+  >>> (dbh, dbpath) = tempfile.mkstemp(suffix=".db")
+  >>> server = BioSeqDatabase.open_database(driver = 'sqlite3', db = dbpath)
+  >>> server.load_database_sql('biosqldb-sqlite.sql')
+  >>> server.commit()
+  >>> server.close()
 
 Create a plone4bio's biosqlroot:
 

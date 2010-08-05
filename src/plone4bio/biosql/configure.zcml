@@ -11,6 +11,7 @@
 
     <!-- Include sub-packages -->
     <include file="monkey.zcml" />
+
     <include package=".content" />
     <include package=".browser" />
     <include package=".events" />
@@ -24,6 +25,8 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+    <!--
      <five:traversable class=".content.proxy.BaseProxy"/>
+    -->
 
 </configure>

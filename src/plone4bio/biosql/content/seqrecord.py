@@ -7,6 +7,7 @@ from zope.interface import implements
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFCore.DynamicType import DynamicType
+from Products.CMFCore.interfaces import IDynamicType
 
 from plone4bio.base import Plone4BioMessageFactory as _
 from plone4bio.base.content.seqrecord import SeqRecord
@@ -29,7 +30,6 @@ class SeqRecordProperty(object):
     def __get__(self, inst, klass):
         if inst is None:
             return self
-        from stxnext import pdb;pdb.set_trace()
         ob = inst._getSeqRecord()
         for name in self.__name.split('.'):
             if not ob is _marker:
@@ -45,21 +45,19 @@ class SeqRecordProperty(object):
         return ob
 
     def __set__(self, inst, value):
-        from stxnext import pdb;pdb.set_trace()
         try:
             inst.seqrecord.set(self.__name, value)
         except:
             logger.exception("unable to set %r on %r for %r" % (value, self.__name, inst))
 
     #def __getattr__(self, name):
-    #    from stxnext import pdb;pdb.set_trace()
     #    return getattr(self.seqrecord, name)
 """
 
-
-class BioSQLSeqRecord(BaseProxy, SeqRecord, DynamicType):
+#XXX: removed DynamicType
+class BioSQLSeqRecord(BaseProxy, SeqRecord): #, DynamicType):
     """  BioSQLSeqRecord ... """
-    __implements__ = (DynamicType.__implements__)
+    # implements(IDynamicType, IBioSQLSeqRecord, ISeqRecord)
     implements(IBioSQLSeqRecord, ISeqRecord)
     meta_type = "BioSQLSeqRecord"
     portal_type = "BioSQLSeqRecord"
@@ -117,7 +115,6 @@ class BioSQLSeqRecord(BaseProxy, SeqRecord, DynamicType):
     def _getBiodatabase(self, reload=False):
         """Return our BioSQLDatabase.
         """
-        # from stxnext import pdb;pdb.set_trace()
         if self._v_biodatabase is None or reload:
             for parent in self.aq_inner.aq_chain:
                 if parent is self.aq_base:

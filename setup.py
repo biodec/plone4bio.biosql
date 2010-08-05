@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 import os
-version = '1.0.1'
+version = '1.1.0'
 
 tests_require = ['collective.testcaselayer', 'pysqlite', ]
 
@@ -35,6 +35,7 @@ setup(name='plone4bio.biosql',
           # -*- Extra requirements: -*-
           'z3c.sqlalchemy',
           'collective.monkeypatcher',
+          # 'collective.progressbar',
       ],
       tests_require=tests_require,
       extras_require={'tests': tests_require},

@@ -31,7 +31,7 @@ class IBioSQLSeqRecord(ISeqRecord, IBioSQLProxy):
     """ IReadContainer  """
 
 class IBioSQLRoot(Interface):
-    """ """
+    """
     title = schema.TextLine(title=_(u"title"))
     dsn = schema.TextLine(title=_(u"DSN"),
         description=_(u"database source name, i.e.: postgres://user@dbserver/dbname"),
@@ -42,4 +42,5 @@ class IBioSQLRoot(Interface):
                      (_(u"bioentry_id"), "bioentry_id"),
                      (_(u"accession"), "accession"),
                      (_(u"accession.version"), "version"),])
-     )
+    )
+    """

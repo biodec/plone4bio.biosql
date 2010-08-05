@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
 __author__ = '''Mauro Amico <mauro@biodec.com>'''
 __docformat__ = 'plaintext'
 
+from threading import local
 from zope.interface import implements
 from zope.component.factory import Factory
 from zope.schema.fieldproperty import FieldProperty
+
+from Acquisition import aq_base
 
 from plone.app.content.container import Container
 # from plone.memoize import request
@@ -13,6 +17,19 @@ from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.interfaces.constrains import IConstrainTypes
+
+from Products.ATContentTypes.content.base import ATCTContent
+from Products.ATContentTypes.content.schemata import ATContentTypeSchema
+
+from Products.Archetypes import atapi
+
+from Products.Archetypes.atapi import Schema
+from Products.Archetypes.atapi import BooleanWidget
+from Products.Archetypes.atapi import StringField
+from Products.Archetypes.atapi import StringWidget
+from Products.Archetypes.atapi import registerType
+
 from zope.app.container.interfaces import IContainer
 from plone.app.content.interfaces import INameFromTitle
 
@@ -42,20 +59,63 @@ drivers = {
 def getdbkey(f, self, *args):
     return self.dsn
 
-# WebDAV ... Collection
-# class BioSQLRoot(BaseContent, BrowserDefaultMixin):
+"""
+
 class BioSQLRoot(Container):
-    __implements__ = (BrowserDefaultMixin.__implements__)
     portal_type='BioSQLRoot'
+
     implements(IBioSQLRoot, IContainer, IFolderish, INameFromTitle)
+
     security = ClassSecurityInfo()
     # isPrincipiaFolderish = True # already on Container
-    dsn = FieldProperty(IBioSQLRoot['dsn'])
+    # dsn = FieldProperty(IBioSQLRoot['dsn'])
+    dsn = 'postgres://postgres@localhost/plone4bio'
     seqrecord_key = FieldProperty(IBioSQLRoot['seqrecord_key'])
-    _v_dbserver = None
+    _v_thread_local = local()
+
+    def __init__(self, *args, **kwargs):
+        if kwargs.has_key('parent'):
+            parent = kwargs['parent']
+            del(kwargs['parent'])
+        super(BioSQLRoot, self).__init__(*args, **kwargs)
+"""
+
+
+Plone4BioSchema = ATContentTypeSchema.copy() + Schema((
+    StringField("dsn",
+        required = True,
+        widget = StringWidget(
+            label = "dsn",
+            label_msgid = "dsn_label",
+            description = "DSN "
+                          "... "
+                          "...",
+            description_msgid = "dsn_help",
+            i18n_domain = "plone4bio")
+        ),
+    ))
+
+class BioSQLRoot(ATCTContent):
+    portal_type='BioSQLRoot'
+
+    implements(IBioSQLRoot, IConstrainTypes)
+
+    security = ClassSecurityInfo()
+    schema = Plone4BioSchema
+    _at_rename_after_creation = True
+    isPrincipiaFolderish = True 
+    # dsn = atapi.ATFieldProperty('dsn')
+    dsn = 'postgres://postgres@localhost/plone4bio'
+    seqrecord_key = "version"
+    _v_thread_local = local()
+
+    # XXX
+    def getLocallyAllowedTypes(self):
+        return []
 
     # see CMFPlone/CatalogTool.py
     def refreshCatalog(self, clear=1):
+        return
         def indexObject(obj, path):
             if (base_hasattr(obj, 'indexObject') and
                 safe_callable(obj.indexObject)):
@@ -65,6 +125,10 @@ class BioSQLRoot(Container):
                     # Catalogs have 'indexObject' as well, but they
                     # take different args, and will fail
                     pass
+                except: # CatalogError:
+                    # import pdb; pdb.set_trace()
+                    # obj.indexObject()
+                    logger.exception("indexObject %r for %r" % (obj, self))
         for database in self.values():
             database.invalidateCache()
         portal_catalog = getToolByName(self, 'portal_catalog')
@@ -72,11 +136,13 @@ class BioSQLRoot(Container):
             portal_catalog.uncatalog_object(obj.getPath())
         portal_catalog.ZopeFindAndApply(self, search_sub=True, apply_func=indexObject)
 
+    """
     def __getattr__(self, name):
         if self.has_key(name):
             return self[name]
         else:
             raise AttributeError, name
+    """
 
     security.declareProtected(View, "getBioSQLRoot")
     def getBioSQLRoot(self):
@@ -90,14 +156,16 @@ class BioSQLRoot(Container):
     def getDBServer(self):
         if not self.dsn:
             return None
-        if self._v_dbserver is None or not self._v_dbserver.adaptor.conn.is_valid:
+        dbserver = getattr(self._v_thread_local, 'dbserver', None)
+        if dbserver is None or not dbserver.adaptor.conn.is_valid:
             try:
                 wrapper = getSAWrapper(self.dsn)
             except ValueError:
                 wrapper = createSAWrapper(dsn=self.dsn, name=self.dsn)
             #TODO: manage OperationalError on connection
-            self._v_dbserver = DBServer(wrapper.connection, __import__(drivers[self.dsn.split(':')[0]]))
-        return self._v_dbserver
+            dbserver = DBServer(wrapper.connection, __import__(drivers[self.dsn.split(':')[0]]))
+            self._v_thread_local.dbserver = dbserver
+        return dbserver
 
     security.declareProtected(View, "getValues")
     def getValues(self):
@@ -122,8 +190,10 @@ class BioSQLRoot(Container):
         except OperationalError:
             logger.exception("getDBServer")
             raise StopIteration
+        if not dbserver:
+            raise StopIteration
         for name in dbserver.keys():
-            yield name
+            yield str(name)
         #try:
         #    for name in dbserver.keys():
         #        yield name
@@ -147,6 +217,23 @@ class BioSQLRoot(Container):
     def iteritems(self):
         for k in self.__iter__():
             yield (k, self[k])
+
+    def __bobo_traverse__(self, REQUEST, name):
+        try:
+            return self[name]
+        except KeyError:
+            pass        
+        if hasattr(aq_base(self), name):
+            return getattr(self, name)
+        # webdav
+        """
+        method = REQUEST.get('REQUEST_METHOD', 'GET').upper()
+        if (method not in ('GET', 'POST') and not
+              isinstance(REQUEST.RESPONSE, xmlrpc.Response) and
+              REQUEST.maybe_webdav_client and not REQUEST.path):
+            return ReflectoNullResource(self, name, REQUEST).__of__(self)
+        """
+        return ATCTContent.__bobo_traverse__(self, REQUEST, name)
 
     # zope2/lib/python/OFS/ObjectManager.py
     def _getOb(self, id, default=_marker):
@@ -193,4 +280,8 @@ class BioSQLRoot(Container):
 for m in ('__contains__', 'iterkeys', 'itervalues', 'values', 'items', 'get'):
     setattr(BioSQLRoot, m, getattr(DictMixin, m).im_func)
 
+# XXX: ???
 bioSQLRootFactory = Factory(BioSQLRoot, title=_(u"Create a new BioSQL Root"))
+
+atapi.registerType(BioSQLRoot, 'plone4bio.biosql')
+
