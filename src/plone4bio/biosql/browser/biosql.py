@@ -1,15 +1,44 @@
+# -*- coding: utf-8 -*-
+#
+# File: biosql.py
+#
+# Copyright (c) 2010 by Mauro Amico (Biodec Srl)
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# @version $Revision: $:
+# @author  $Author: $:
+# @date    $Date: $:
+
+__author__ = '''Mauro Amico <mauro@biodec.com>'''
+__docformat__ = 'plaintext'
 
 from Acquisition import aq_inner
-
 from zope.formlib import form
-from plone.app.form import base
+
+from Products.Five.formlib.formbase import AddFormBase
+from Products.Five.formlib.formbase import EditFormBase
 
 from plone4bio.base import Plone4BioMessageFactory as _
-from plone4bio.base.browser.seqrecord import SeqRecordAddForm
 from plone4bio.base.content.seqrecord import SeqRecord
 from plone4bio.biosql.interfaces import IBioSQLDatabase, IBioSQLSeqRecord
 
-class BioSQLDatabaseAddForm(base.AddForm):
+class BioSQLDatabaseAddForm(AddFormBase):
     """Add form """
     form_fields = form.Fields(IBioSQLDatabase)
     label = _(u"Add BioSQLDatabase")
@@ -23,19 +52,19 @@ class BioSQLDatabaseAddForm(base.AddForm):
         # TODO: test catalog object
         return object
 
-class BioSQLDatabaseEditForm(base.EditForm):
+class BioSQLDatabaseEditForm(EditFormBase):
     """Edit form """
     form_fields = form.Fields(IBioSQLDatabase)
     label = _(u"Edit BioSQLDatabase")
     form_name = _(u"Edit BioSQLDatabase")
 
-class BioSQLSeqRecordEditForm(base.EditForm):
+class BioSQLSeqRecordEditForm(EditFormBase):
     """Edit form """
     form_fields = form.Fields(IBioSQLSeqRecord)
     label = _(u"Edit BioSQLSeqRecord")
     form_name = _(u"Edit BioSQLSeqRecord")
 
-class BioSQLSeqRecordAddForm(SeqRecordAddForm):
+class BioSQLSeqRecordAddForm(AddFormBase):
     """Add form """
     label = _(u"Add BioSQLSeqRecord")
     form_name = _(u"Edit BioSQLSeqRecord")

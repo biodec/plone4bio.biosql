@@ -12,26 +12,6 @@ from plone4bio.biosql.interfaces import IBioSQLRoot
 class LongTextWidget(TextWidget):
     displayWidth = 50
 
-'''
-class BioSQLRootAddForm(base.AddForm):
-    """Add form """
-    form_fields = form.Fields(IBioSQLRoot)
-    form_fields['dsn'].custom_widget = LongTextWidget
-    label = _(u"Add BioSQLRoot")
-    form_name = _(u"Edit BioSQLRoot")
-    def create(self, data):
-        object = createObject(u"plone4bio.biosql.BioSQLRoot")
-        form.applyChanges(object, self.form_fields, data)
-        return object
-
-class BioSQLRootEditForm(base.EditForm):
-    """Edit form """
-    form_fields = form.Fields(IBioSQLRoot)
-    form_fields['dsn'].custom_widget = LongTextWidget
-    label = _(u"Edit BioSQLRoot")
-    form_name = _(u"Edit BioSQLRoot")
-'''
-
 class RefreshCatalog(BrowserView):
     """View"""
     def __init__(self, context, request):

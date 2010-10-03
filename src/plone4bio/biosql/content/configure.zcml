@@ -7,19 +7,7 @@
     <!-- Register the classes as Zope 2 content objects, and set up
          factories so that Zope and CMF can create them.
       -->
-
-    <five:registerClass
-        class=".root.BioSQLRoot"
-        meta_type="BioSQLRoot"
-        permission="cmf.AddPortalContent"
-        addview="plone4bio.biosql.BioSQLRoot"
-      />
     
-    <utility
-        component=".root.bioSQLRootFactory"
-        name="plone4bio.biosql.BioSQLRoot"
-        />
-
     <class class=".root.BioSQLRoot">
         <require
             permission="zope2.View"

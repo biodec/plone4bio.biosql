@@ -7,8 +7,8 @@
  <property name="description">Plone4Bio BioSQLRoot</property>
  <property name="content_icon">++resource++plone4bio.biosql.images/biosqlroot.png</property>
  <property name="content_meta_type">BioSQLRoot</property>
- <property name="product"></property>
- <property name="factory">plone4bio.biosql.BioSQLRoot</property>
+ <property name="product">plone4bio.biosql</property>
+ <property name="factory">addBioSQLRoot</property>
  <property name="immediate_view">@@view</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>

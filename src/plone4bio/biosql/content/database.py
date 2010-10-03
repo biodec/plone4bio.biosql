@@ -48,6 +48,7 @@ class BioSQLDatabase(BaseProxy, DynamicType, Container):
     # TODO: define wf
     _Review_portal_content_Permission = ''
     _Request_review_Permission = ''
+    _Sharing_page__Delegate_roles_Permission = ''
 
     #_v_root = None
 

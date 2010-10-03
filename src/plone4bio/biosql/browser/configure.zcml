@@ -9,28 +9,13 @@
 
     <include package="plone.app.contentmenu" /> 
 
-     <browser:page
+    <browser:page
          for="..interfaces.IBioSQLRoot"
          name="view"
          template="templates/biosqlroot.pt"
          allowed_interface=".interfaces.IBioSQLRootView"
          permission="zope2.View"
          />
-<!--
-     <browser:page
-        for="zope.app.container.interfaces.IAdding"
-        name="plone4bio.biosql.BioSQLRoot"
-        class=".root.BioSQLRootAddForm"
-        permission="cmf.AddPortalContent"
-        />
-
-   <browser:page
-        for="..interfaces.IBioSQLRoot"
-        name="edit"
-        class=".root.BioSQLRootEditForm"
-        permission="cmf.ModifyPortalContent"
-        />
--->
 
     <browser:view
         name="refresh_catalog"
@@ -39,21 +24,21 @@
         permission="cmf.ModifyPortalContent"
         />
 
-     <browser:page
+    <browser:page
         for="zope.app.container.interfaces.IAdding"
         name="plone4bio.biosql.BioSQLDatabase"
         class=".biosql.BioSQLDatabaseAddForm"
         permission="cmf.AddPortalContent"
         />
 
-   <browser:page
+    <browser:page
         for="..interfaces.IBioSQLDatabase"
         name="edit"
         class=".biosql.BioSQLDatabaseEditForm"
         permission="cmf.ModifyPortalContent"
         />
 
-   <browser:page
+    <browser:page
         for="zope.app.container.interfaces.IAdding"
         name="plone4bio.biosql.BioSQLSeqRecord"
         class=".biosql.BioSQLSeqRecordAddForm"

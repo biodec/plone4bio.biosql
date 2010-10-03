@@ -6,6 +6,8 @@ from threading import local
 from zope.interface import implements
 from zope.component.factory import Factory
 from zope.schema.fieldproperty import FieldProperty
+from zope.schema.vocabulary import SimpleVocabulary
+
 
 from Acquisition import aq_base
 
@@ -24,8 +26,7 @@ from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 
 from Products.Archetypes import atapi
 
-from Products.Archetypes.atapi import Schema
-from Products.Archetypes.atapi import BooleanWidget
+from Products.Archetypes import atapi
 from Products.Archetypes.atapi import StringField
 from Products.Archetypes.atapi import StringWidget
 from Products.Archetypes.atapi import registerType
@@ -81,10 +82,10 @@ class BioSQLRoot(Container):
 """
 
 
-Plone4BioSchema = ATContentTypeSchema.copy() + Schema((
-    StringField("dsn",
+Plone4BioSchema = ATContentTypeSchema.copy() + atapi.Schema((
+    atapi.StringField("dsn",
         required = True,
-        widget = StringWidget(
+        widget = atapi.StringWidget(
             label = "dsn",
             label_msgid = "dsn_label",
             description = "DSN "
@@ -92,7 +93,22 @@ Plone4BioSchema = ATContentTypeSchema.copy() + Schema((
                           "...",
             description_msgid = "dsn_help",
             i18n_domain = "plone4bio")
-        ),
+    ),
+    atapi.StringField("seqrecord_key",
+        required = True,
+        enforceVocabulary = True,
+        default = 'bioentry_id',
+        vocabulary = [("bioentry_id", _(u"bioentry_id")),
+                      ("accession", _(u"accession")),
+                      ("version", _(u"accession.version")),
+                     ],
+        widget = atapi.SelectionWidget(
+            label = "seqrecord_key",
+            label_msgid = "seqrecord_key_label",
+            description = _(u"select the field name key for seqrecord uris"),
+            description_msgid = "seqrecord_key_help",
+            i18n_domain = "plone4bio")
+    ),
     ))
 
 class BioSQLRoot(ATCTContent):
@@ -279,9 +295,6 @@ class BioSQLRoot(ATCTContent):
 # We don't want *everything* because some cause problems for us
 for m in ('__contains__', 'iterkeys', 'itervalues', 'values', 'items', 'get'):
     setattr(BioSQLRoot, m, getattr(DictMixin, m).im_func)
-
-# XXX: ???
-bioSQLRootFactory = Factory(BioSQLRoot, title=_(u"Create a new BioSQL Root"))
 
 atapi.registerType(BioSQLRoot, 'plone4bio.biosql')
 
