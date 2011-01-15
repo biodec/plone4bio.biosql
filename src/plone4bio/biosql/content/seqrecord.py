@@ -134,7 +134,7 @@ class BioSQLSeqRecord(BaseProxy, SeqRecord): #, DynamicType):
                 self._v_seqrecord = self._getBiodatabase().getDatabase().get_Seq_by_ver(self.id)
             else: # default = 'bioentry_id':
                 self._v_seqrecord = self._getBiodatabase().getDatabase()[self.id]
-            logger.debug("%s -> %r" % (self.id, self._v_seqrecord))
+            # logger.debug("%s -> %r" % (self.id, self._v_seqrecord))
         return self._v_seqrecord
 
     def _setSeqRecord(self, seqrecord):
