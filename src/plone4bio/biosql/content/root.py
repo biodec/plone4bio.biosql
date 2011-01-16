@@ -172,7 +172,8 @@ class BioSQLRoot(ATCTContent):
     def getDBServer(self):
         if not self.dsn:
             return None
-        dbserver = getattr(self._v_thread_local, 'dbserver', None)
+        self._v_thread_local.dbconns = getattr(self._v_thread_local, 'dbconns', {})
+        dbserver = self._v_thread_local.dbconns.get(self.dsn, None)
         if dbserver is None or not dbserver.adaptor.conn.is_valid:
             try:
                 wrapper = getSAWrapper(self.dsn)
@@ -180,7 +181,7 @@ class BioSQLRoot(ATCTContent):
                 wrapper = createSAWrapper(dsn=self.dsn, name=self.dsn)
             #TODO: manage OperationalError on connection
             dbserver = DBServer(wrapper.connection, __import__(drivers[self.dsn.split(':')[0]]))
-            self._v_thread_local.dbserver = dbserver
+            self._v_thread_local.dbconns[self.dsn] = dbserver
         return dbserver
 
     security.declareProtected(View, "getValues")
