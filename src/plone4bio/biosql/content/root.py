@@ -48,6 +48,8 @@ from plone4bio.biosql.interfaces import IBioSQLRoot
 from plone4bio.biosql.content.database import BioSQLDatabase
 
 import logging
+import transaction
+
 logger = logging.getLogger('plone4bio')
 
 _marker=[]
@@ -121,7 +123,8 @@ class BioSQLRoot(ATCTContent):
     _at_rename_after_creation = True
     isPrincipiaFolderish = True 
     # dsn = atapi.ATFieldProperty('dsn')
-    dsn = 'postgres://postgres@localhost/plone4bio'
+    #dsn = 'postgres://postgres@localhost/plone4bio'
+    dsn = ''
     seqrecord_key = "version"
     _v_thread_local = local()
 
@@ -131,26 +134,53 @@ class BioSQLRoot(ATCTContent):
 
     # see CMFPlone/CatalogTool.py
     def refreshCatalog(self, clear=1):
-        return
-        def indexObject(obj, path):
-            if (base_hasattr(obj, 'indexObject') and
-                safe_callable(obj.indexObject)):
-                try:
-                    obj.indexObject()
-                except TypeError:
-                    # Catalogs have 'indexObject' as well, but they
-                    # take different args, and will fail
-                    pass
-                except: # CatalogError:
-                    # import pdb; pdb.set_trace()
-                    # obj.indexObject()
-                    logger.exception("indexObject %r for %r" % (obj, self))
+	""" re-index everything we can find """
+	## TODO: the indexing action should act only on the
+	## db that trigger the reindexing and not on the whole db
+
+	## TODO: it should be forked to no wait until the indexing
+	## has finished.
+
+        catalog = getToolByName(self, 'portal_catalog')
+
+	path = '/'.join(self.getPhysicalPath())
+
         for database in self.values():
             database.invalidateCache()
-        portal_catalog = getToolByName(self, 'portal_catalog')
-        for obj in portal_catalog.searchResults(path=self.absolute_url_path()):
-            portal_catalog.uncatalog_object(obj.getPath())
-        portal_catalog.ZopeFindAndApply(self, search_sub=True, apply_func=indexObject)
+
+	for biodb in self:
+		biodb_path = self.absolute_url_path() + '/' + biodb
+		## Uncatalog only seqrecords, otherwise BiosqlRoot
+		## wont be visible
+		for obj in catalog.searchResults(path=biodb_path):
+			catalog.uncatalog_object(obj.getPath())
+	## Search only in path to avoid reindexing of other databases
+        catalog.ZopeFindAndApply(self, search_sub=True, apply_func=catalog.catalog_object, apply_path=path)
+
+	logger.info("Catalog: find %s objects on BioSQLRoot %s" % (len(catalog.searchResults(path= self.absolute_url_path())), self.absolute_url_path()))
+		
+        #return
+        #def indexObject(obj, path):
+        #    if (base_hasattr(obj, 'indexObject') and
+        #        safe_callable(obj.indexObject)):
+        #        try:
+        #            obj.indexObject()
+        #        except TypeError:
+        #            # Catalogs have 'indexObject' as well, but they
+        #            # take different args, and will fail
+        #            pass
+        #        except: # CatalogError:
+        #            # import pdb; pdb.set_trace()
+        #            # obj.indexObject()
+        #            logger.exception("indexObject %r for %r" % (obj, self))
+        ##for database in self.values():
+	##    print database
+        ##    database.invalidateCache()
+        #portal_catalog = getToolByName(self, 'portal_catalog')
+        #for obj in portal_catalog.searchResults(path=self.absolute_url_path()):
+        #    portal_catalog.uncatalog_object(obj.getPath())
+        #portal_catalog.ZopeFindAndApply(self, search_sub=True, apply_func=indexObject)
+
 
     """
     def __getattr__(self, name):
@@ -167,6 +197,14 @@ class BioSQLRoot(ATCTContent):
     def getpath(self, id):
         return str(id)
 
+    def getDriver(self):
+	protocol_part = self.dsn.split('://')[0]
+	if '+' in protocol_part:
+		driver = self.dsn.split('+')[-1]
+	else:
+		driver = drivers[protocol_part]
+	return driver
+
     # TODO: move to proxy ???
     # @request.cache(get_key=getdbkey, get_request='self.REQUEST')
     def getDBServer(self):
@@ -180,7 +218,7 @@ class BioSQLRoot(ATCTContent):
             except ValueError:
                 wrapper = createSAWrapper(dsn=self.dsn, name=self.dsn)
             #TODO: manage OperationalError on connection
-            dbserver = DBServer(wrapper.connection, __import__(drivers[self.dsn.split(':')[0]]))
+            dbserver = DBServer(wrapper.connection, __import__( self.getDriver() ))
             self._v_thread_local.dbconns[self.dsn] = dbserver
         return dbserver
 
