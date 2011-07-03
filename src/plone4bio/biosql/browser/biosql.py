@@ -31,8 +31,12 @@ __docformat__ = 'plaintext'
 from Acquisition import aq_inner
 from zope.formlib import form
 
-from Products.Five.formlib.formbase import AddFormBase
-from Products.Five.formlib.formbase import EditFormBase
+try:
+    from five.formlib.formbase import AddFormBase
+    from five.formlib.formbase import EditFormBase
+except ImportError:
+    from Products.Five.formlib.formbase import AddFormBase
+    from Products.Five.formlib.formbase import EditFormBase
 
 from plone4bio.base import Plone4BioMessageFactory as _
 from plone4bio.base.content.seqrecord import SeqRecord

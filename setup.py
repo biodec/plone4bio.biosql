@@ -41,5 +41,7 @@ setup(name='plone4bio.biosql',
       extras_require={'tests': tests_require},
       entry_points="""
       # -*- Entry points: -*-
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )
